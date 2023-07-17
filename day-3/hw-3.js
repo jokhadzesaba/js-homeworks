@@ -14,4 +14,4 @@ function addOne() {
   console.log(a);
 }
 genericFunction(addOne());
-console.log("gg");
+
