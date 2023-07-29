@@ -3,8 +3,7 @@ function readingStatus(books) {
     let str = "";
     if (books[i].haveRead) {
       books[i].daysAgo = function () {
-        let x = new Date().getDate() - books[i].dateOfRead.getDate();
-        return `${x} days ago`;
+        return `${Math.round((new Date() - books[i].dateOfRead.getTime())/(1000 * 3600 * 24))} days ago`;
       };
       console.log(
         (str += `${books[i].author} have read ${books[i].title} book ${books[i].daysAgo()}`));
@@ -13,6 +12,7 @@ function readingStatus(books) {
     }
   }
 }
+
 var Books = [
   {
     author: "Bill",
