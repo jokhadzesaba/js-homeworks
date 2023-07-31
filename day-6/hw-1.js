@@ -5,7 +5,7 @@ function readingStatus(books) {
       console.log((str += `${books[i].author} have read ${books[i].title} book`));
     } else {
       console.log(
-        (str += `${books[i].author} havev't read ${books[i].title} book yet`)
+        (str += `${books[i].author} haven't read ${books[i].title} book yet`)
       );
     }
   }
