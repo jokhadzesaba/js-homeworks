@@ -7,7 +7,7 @@ Object.defineProperty(Object.prototype, "mergeDeepRight", {
       return value;
     };
 
-    for (let i in data) {
+    for (let i of Object.getOwnPropertyNames(data)) {
       if (Array.isArray(data[i]) && i in this) {
         this[i] = [...this[i], ...data[i]];
       } else if (
@@ -46,5 +46,5 @@ let data1 = {
     },
   },
 };
-
+console.log(data.mergeDeepRight(data1));
 
