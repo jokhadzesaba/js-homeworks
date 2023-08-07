@@ -13,4 +13,4 @@ class Validator {
   }
 }
 const validator = new Validator();
-console.log(validator.isPhone("555 54 20 34"));
+console.log(validator.isDate("2020.05.20"));

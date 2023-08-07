@@ -11,7 +11,7 @@ class User {
 class Student extends User {
   constructor(name, surname, year) {
     super(name, surname);
-    if (year < 2018) {
+    if (year < 2018 || year > new Date().getFullYear()) {
       throw new Error("Invalid admission year");
     }
     this.year = year;
@@ -26,4 +26,4 @@ console.log(student.name); // print 'John'
 console.log(student.surname); // print 'John'
 console.log(student.getFullName()); // print 'John Smith'
 console.log(student.year); // print 2018
-console.log(student.getCourse()); // print 5 - fourth course, because current year 2022 already 2023 :D
+console.log(student.getCourse()); // print 5 -  because current year already 2023 :D
