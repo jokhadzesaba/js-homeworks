@@ -13,7 +13,6 @@ class DB {
     obj.id = this.#id;
     this.#allUser.push(obj);
     this.#idContainer.push(this.#id);
-
     return this.#id.toString();
   }
   read(id) {
@@ -36,7 +35,11 @@ class DB {
   update(id, obj) {
     this.#idValidation(id);
     this.#objValidation(obj);
-    this.#keyValidatiion(obj);
+    for (let i of Object.getOwnPropertyNames(obj)) {
+      if (i !== "name" && i !== "age" && i !== "country" && i !== "salary") {
+        throw new Error(`${i} is not valid`);
+      }
+    }
     id = parseInt(id);
     if (!this.#idContainer.includes(id)) {
       throw new Error("no such an Id exists");
@@ -181,10 +184,13 @@ class DB {
     }
   }
   #keyValidatiion(obj) {
-    for (let i of Object.getOwnPropertyNames(obj)) {
-      if (i !== "name" && i !== "age" && i !== "country" && i !== "salary") {
-        throw new Error(`${i} is not valid`);
-      }
+    if (
+      !Object.getOwnPropertyNames(obj).includes("name") ||
+      !Object.getOwnPropertyNames(obj).includes("country") ||
+      !Object.getOwnPropertyNames(obj).includes("age") ||
+      !Object.getOwnPropertyNames(obj).includes("salary")
+    ) {
+      throw new Error("user must contain name, age , country and salary");
     }
   }
   #idValidation(id) {
