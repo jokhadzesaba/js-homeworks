@@ -13,8 +13,8 @@ class DB {
     obj.id = this.#id;
     this.#allUser.push(obj);
     this.#idContainer.push(this.#id);
-    console.log(this.#idContainer);
-    return this.#id;
+
+    return this.#id.toString();
   }
   read(id) {
     if (typeof id === "undefined") {
@@ -73,10 +73,10 @@ class DB {
     }
     for (let user of this.#map.values()) {
       if (
-        (!query.name || user.name === query.name) &&
-        (!query.country || user.country === query.country) &&
-        this.#checkAge(user.age, query.age) &&
-        this.#checkSalary(user.salary, query.salary)
+        (!obj.name || user.name === obj.name) &&
+        (!obj.country || user.country === obj.country) &&
+        this.#checkAge(user.age, obj.age) &&
+        this.#checkSalary(user.salary, obj.salary)
       ) {
         filtered.push(user);
       }
@@ -89,20 +89,22 @@ class DB {
     if (queryAge.max && userAge > queryAge.max) return false;
     return true;
   }
-  #checkNameAndCountry(string) {
-    if (query.hasOwnProperty(string)) {
-      if (typeof query[string] !== "string") {
-        throw new Error(`please enter string for ${string}`);
-      }
-    }
-  }
+
   #queryValidation(query) {
     if (typeof query !== "object") {
       throw new Error("Query must be an object");
     }
+    if (query.hasOwnProperty("name")) {
+      if (typeof query["name"] !== "string") {
+        throw new Error(`please enter string for name`);
+      }
+    }
+    if (query.hasOwnProperty("country")) {
+      if (typeof query["country"] !== "string") {
+        throw new Error(`please enter string for country`);
+      }
+    }
 
-    this.#checkNameAndCountry("name");
-    this.#checkNameAndCountry("country");
     if (query.hasOwnProperty("country")) {
       if (typeof query["country"] !== "string") {
         throw new Error("please enter string for country");
@@ -110,14 +112,14 @@ class DB {
     }
     if (query.hasOwnProperty("age")) {
       this.#objValidation(query["age"]);
-      this.#ageAndSalaryValidation(Object.keys(query.age), "age");
+      this.#ageAndSalaryValidation(Object.keys(query.age), "age", query);
     }
     if (query.hasOwnProperty("salary")) {
       this.#objValidation(query["salary"]);
-      this.#ageAndSalaryValidation(Object.keys(query.salary), "salary");
+      this.#ageAndSalaryValidation(Object.keys(query.salary), "salary", query);
     }
   }
-  #ageAndSalaryValidation(objKeys, ageOrSalary) {
+  #ageAndSalaryValidation(objKeys, ageOrSalary, query) {
     const properties = objKeys;
     if (!(properties.includes("min") || properties.includes("max"))) {
       throw new Error(`${ageOrSalary} object must contain min, max, or both`);
@@ -146,6 +148,23 @@ class DB {
     ) {
       throw new Error(
         `max property inside ${ageOrSalary} object must be a number`
+      );
+    }
+    if (
+      query[ageOrSalary].hasOwnProperty("min") &&
+      query[ageOrSalary].min <= 0
+    ) {
+      throw new Error(
+        `min property inside ${ageOrSalary} object must be greater than 0`
+      );
+    }
+
+    if (
+      query[ageOrSalary].hasOwnProperty("max") &&
+      query[ageOrSalary].max <= 0
+    ) {
+      throw new Error(
+        `max property inside ${ageOrSalary} object must be greater than 0`
       );
     }
   }
